@@ -206,7 +206,15 @@ function renderChords(title, chords) {
 
 init().then(() => {
   const params = new URLSearchParams(location.search)
-  const rawText = params.get('text')
+
+  // Read `text` from the raw search string so unencoded `&` inside the value
+  // (e.g. from embedded URLs) don't truncate it. `text` must be the last param.
+  const textKey = '&text='
+  const textIdx = location.search.indexOf(textKey)
+  const rawText = textIdx >= 0
+    ? decodeURIComponent(location.search.slice(textIdx + textKey.length).replace(/\+/g, ' '))
+    : params.get('text')
+
   if (rawText) {
     const lines = rawText.split('\n')
     const chords = extractChords(rawText, lines)
