@@ -57,6 +57,10 @@ async function init() {
   })
 
   document.getElementById('print-btn').addEventListener('click', () => window.print())
+
+  document.getElementById('load-btn').addEventListener('click', () => {
+    document.getElementById('file-input').click()
+  })
 }
 
 function updateTuningLabel() {
@@ -129,10 +133,14 @@ function renderChords(title, chords) {
   const info = document.getElementById('song-info')
   const grid = document.getElementById('chord-grid')
   const printBtn = document.getElementById('print-btn')
+  const loadBtn = document.getElementById('load-btn')
+  const dropZone = document.getElementById('drop-zone')
 
   info.textContent = `${title} — ${chords.length} chord${chords.length !== 1 ? 's' : ''}`
   grid.innerHTML = ''
   printBtn.style.display = ''
+  loadBtn.style.display = ''
+  dropZone.style.display = 'none'
 
   for (const name of chords) {
     const entry = dict.find(c => c.name === name)
