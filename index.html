@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baritone Uke Chord Charts</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init()</script>
+  <script src="vendor/pdf.min.js"></script>
+  <script src="vendor/svguitar.umd.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Uke Chord Charts</h1>
+    <div id="tuning-control">
+      <label>Tuning:
+        <select id="tuning-selector">
+          <option value="baritone">Baritone (D G B E)</option>
+          <option value="standard">Standard (G C E A)</option>
+        </select>
+      </label>
+      <span id="tuning-label"></span>
+    </div>
+    <div id="song-info"></div>
+    <button id="print-btn" style="display:none">Print</button>
+  </header>
+
+  <div id="drop-zone">
+    <p>Drop a ChordPro PDF here or <label for="file-input">choose file</label></p>
+    <input type="file" id="file-input" accept=".pdf">
+  </div>
+
+  <div id="chord-grid"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

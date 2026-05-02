@@ -1,0 +1,104 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #f5f5f5;
+  color: #111;
+  padding: 1rem;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+header h1 { font-size: 1.2rem; }
+
+#tuning-control { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+#tuning-selector { font-size: 0.9rem; }
+#tuning-label { color: #888; font-size: 0.8rem; display: none; }
+
+#song-info { color: #555; font-size: 0.9rem; }
+
+#print-btn {
+  margin-left: auto;
+  padding: 0.4rem 1rem;
+  border: 1px solid #333;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#drop-zone {
+  border: 2px dashed #aaa;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  background: #fff;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+#drop-zone.drag-over {
+  border-color: #4a90e2;
+  background: #eef5ff;
+}
+
+#drop-zone label {
+  color: #4a90e2;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#file-input { display: none; }
+
+#chord-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+}
+
+.chord-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.chord-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.chord-card svg {
+  width: 100%;
+  display: block;
+}
+
+.chord-card.unknown {
+  border-color: #f0a500;
+  background: #fff9ec;
+}
+
+.chord-card.unknown .unknown-label {
+  font-size: 0.75rem;
+  color: #f0a500;
+}
+
+@media print {
+  body { background: #fff; padding: 0.5rem; }
+  header { margin-bottom: 0.5rem; }
+  #drop-zone, #print-btn { display: none !important; }
+  #chord-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 0.5rem;
+  }
+  .chord-card { border: 1px solid #ccc; padding: 0.25rem; }
+}
