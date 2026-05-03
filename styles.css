@@ -127,8 +127,16 @@ header h1 {
   color: #f0a500;
 }
 
-#take-photo-btn {
+#header-actions {
   margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+#take-photo-btn,
+#get-shortcut-btn {
   background: var(--accent);
   color: #fff;
   border: none;
