@@ -64,6 +64,6 @@ def patch(json_file, url_prefix):
 
 
 if __name__ == '__main__':
-    patch('chords.json', 'https://ukulele-chords.com/baritone/')
+    patch('chords_baritone.json', 'https://ukulele-chords.com/baritone/')
     patch('chords_standard.json', 'https://ukulele-chords.com/')
     print('\nDone.')

@@ -2716,7 +2716,7 @@
     "barres": [
       {
         "fret": 2,
-        "fromString": 2,
+        "fromString": 0,
         "toString": 4
       }
     ],

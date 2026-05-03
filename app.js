@@ -3,7 +3,7 @@
 const CHORD_REGEX = /^[A-G](#|b)?(maj|min|madd|m\+|m|dim|aug|sus|add|M)?\d*(\/[A-G](#|b)?)?$/
 
 const TUNINGS = {
-  baritone: { labels: ['D', 'G', 'B', 'E'], file: 'chords.json', shortcut: 'Ukulele Baritone' },
+  baritone: { labels: ['D', 'G', 'B', 'E'], file: 'chords_baritone.json', shortcut: 'Ukulele Baritone' },
   standard: { labels: ['G', 'C', 'E', 'A'], file: 'chords_standard.json', shortcut: 'Ukulele Standard' },
 }
 
@@ -20,7 +20,7 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
 async function init() {
   const v = '?v=' + Date.now()
   ;[chordDicts.baritone, chordDicts.standard] = await Promise.all([
-    fetch('chords.json' + v).then(r => r.json()),
+    fetch('chords_baritone.json' + v).then(r => r.json()),
     fetch('chords_standard.json' + v).then(r => r.json()),
   ])
 

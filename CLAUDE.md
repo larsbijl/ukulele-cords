@@ -27,7 +27,7 @@ Single-page tool: drop a PDF → extract unique chords → render baritone ukule
 **Files:**
 - `index.html` — markup, drop zone, CDN script tags (pdfjs-dist@3.11.174, svguitar@2.5.0 UMD)
 - `app.js` — all logic as plain globals (no modules)
-- `chords.json` — fingering dictionary, 40 entries
+- `chords_baritone.json` — fingering dictionary, 40 entries
 - `styles.css` — grid layout + `@media print`
 - `songs/` — PDF songbooks for testing
 
@@ -44,7 +44,7 @@ PDFs use inline bracket notation like `[Am] Today is [C] gonna be...`. pdfjs fra
 
 `CHORD_REGEX` handles compound qualities: `madd` (e.g. `Amadd9`), `m+` (e.g. `Am+7`), standard qualities, slash chords.
 
-## chords.json schema
+## chords_baritone.json schema
 
 ```json
 {"name": "G", "frets": [0, 0, 0, 3], "barres": []}
@@ -103,4 +103,4 @@ The app reads the `text` query param on load, extracts chords from it using the 
 
 ## Adding a missing chord
 
-Edit `chords.json`. DGBE tuning is the same as the top 4 strings of a standard guitar, so guitar chord shapes translate directly. Unknown chords render as a yellow `?` card. The dictionary is fetched with a cache-buster (`?v=Date.now()`) on every page load.
+Edit `chords_baritone.json`. DGBE tuning is the same as the top 4 strings of a standard guitar, so guitar chord shapes translate directly. Unknown chords render as a yellow `?` card. The dictionary is fetched with a cache-buster (`?v=Date.now()`) on every page load.
