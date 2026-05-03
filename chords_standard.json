@@ -6129,10 +6129,10 @@
     ],
     "barres": [],
     "fingers": [
+      2,
       0,
       0,
-      0,
-      0
+      3
     ],
     "difficulty": null,
     "importance": null
@@ -6147,7 +6147,7 @@
     ],
     "barres": [],
     "fingers": [
-      0,
+      1,
       0,
       0,
       0
@@ -6165,9 +6165,9 @@
     ],
     "barres": [],
     "fingers": [
-      0,
-      0,
-      0,
+      3,
+      1,
+      2,
       0
     ],
     "difficulty": 2,
@@ -6183,10 +6183,10 @@
     ],
     "barres": [],
     "fingers": [
+      2,
       0,
-      0,
-      0,
-      0
+      1,
+      3
     ],
     "difficulty": 2,
     "importance": "Essential"
@@ -6202,15 +6202,15 @@
     "barres": [
       {
         "fret": 1,
-        "fromString": 1,
-        "toString": 3
+        "fromString": 4,
+        "toString": 2
       }
     ],
     "fingers": [
-      0,
-      0,
-      0,
-      0
+      1,
+      1,
+      1,
+      4
     ],
     "difficulty": 1,
     "importance": "Essential"
@@ -6223,11 +6223,17 @@
       2,
       0
     ],
-    "barres": [],
+    "barres": [
+      {
+        "fret": 2,
+        "fromString": 4,
+        "toString": 2
+      }
+    ],
     "fingers": [
-      0,
-      0,
-      0,
+      1,
+      1,
+      1,
       0
     ],
     "difficulty": null,

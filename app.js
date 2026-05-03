@@ -11,13 +11,15 @@ const LEGEND_ITEMS = [
   { num: 4, label: 'Pinky', color: FINGER_COLORS[4] },
 ]
 
+const SHORTCUT_NAME = 'Ukulele'
+
 const TUNINGS = {
-  baritone: { labels: ['D', 'G', 'B', 'E'], file: 'chords_baritone.json', shortcut: 'Ukulele Baritone' },
-  standard: { labels: ['G', 'C', 'E', 'A'], file: 'chords_standard.json', shortcut: 'Ukulele Standard' },
+  baritone: { labels: ['D', 'G', 'B', 'E'], file: 'chords_baritone.json' },
+  standard: { labels: ['G', 'C', 'E', 'A'], file: 'chords_standard.json' },
 }
 
 let chordDicts = { baritone: [], standard: [] }
-let currentTuning = 'baritone'
+let currentTuning = 'standard'
 let lastTitle = ''
 let lastChords = []
 let manualChords = []
@@ -33,15 +35,14 @@ async function init() {
     fetch('chords_standard.json' + v).then(r => r.json()),
   ])
 
-  const params = new URLSearchParams(location.search)
-  if (params.has('tuning') && TUNINGS[params.get('tuning')]) {
-    currentTuning = params.get('tuning')
-  }
+  const saved = localStorage.getItem('ukulele-tuning')
+  if (saved && TUNINGS[saved]) currentTuning = saved
 
   const selector = document.getElementById('tuning-selector')
   selector.value = currentTuning
   selector.addEventListener('change', () => {
     currentTuning = selector.value
+    localStorage.setItem('ukulele-tuning', currentTuning)
     updateTuningLabel()
     if (lastChords.length) renderChords(lastTitle, lastChords)
   })
@@ -52,10 +53,10 @@ async function init() {
 }
 
 function updateTuningLabel() {
-  const { labels, shortcut } = TUNINGS[currentTuning]
+  const labels = TUNINGS[currentTuning].labels
   document.getElementById('tuning-label').textContent = labels.join(' ')
   const btn = document.getElementById('take-photo-btn')
-  if (btn) btn.href = 'shortcuts://run-shortcut?name=' + encodeURIComponent(shortcut)
+  if (btn) btn.href = 'shortcuts://run-shortcut?name=' + encodeURIComponent(SHORTCUT_NAME)
 }
 
 function extractChords(allText, lines) {
