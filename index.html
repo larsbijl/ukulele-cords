@@ -6,6 +6,7 @@
   <title>Baritone Uke Chord Charts</title>
   <link rel="stylesheet" href="styles.css">
   <script src="vendor/svguitar.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
 </head>
 <body>
   <header>
@@ -19,7 +20,22 @@
       <span id="tuning-label"></span>
     </div>
     <div id="song-info"></div>
+    <button id="add-chord-btn" aria-label="Add chord">+</button>
   </header>
+
+  <div id="chord-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Add chord">
+      <h2>Add chord</h2>
+      <input id="chord-input" type="text" placeholder="e.g. Am, G7, Cmaj7"
+        list="chord-suggestions" autocomplete="off" autocorrect="off"
+        autocapitalize="characters" spellcheck="false">
+      <datalist id="chord-suggestions"></datalist>
+      <div class="modal-actions">
+        <button id="modal-cancel">Cancel</button>
+        <button id="modal-add" class="btn-primary">Add</button>
+      </div>
+    </div>
+  </div>
 
   <div id="chord-grid"></div>
 
