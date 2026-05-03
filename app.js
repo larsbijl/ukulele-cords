@@ -48,7 +48,14 @@ async function init() {
   })
 
   updateTuningLabel()
-  if (isIOS) document.getElementById('take-photo-btn').removeAttribute('hidden')
+  if (isIOS) {
+    document.getElementById('take-photo-btn').removeAttribute('hidden')
+    const shortcutBtn = document.getElementById('get-shortcut-btn')
+    if (shortcutBtn) {
+      shortcutBtn.removeAttribute('hidden')
+      shortcutBtn.href = 'https://www.icloud.com/shortcuts/3d15801f293a48c89a72f79806968258'
+    }
+  }
   initModal()
 }
 
