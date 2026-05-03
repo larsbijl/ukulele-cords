@@ -54,7 +54,7 @@ function extractChords(allText, lines) {
   for (const line of lines) {
     const tokens = line.trim().split(/\s+/).filter(Boolean)
       .map(t => t.replace(/^[\[(]|[)\]]$/g, ''))
-    if (tokens.length >= 1 && tokens.length <= 4 &&
+    if (tokens.length >= 1 &&
         tokens.every(t => t.length <= 6 && CHORD_REGEX.test(t))) {
       tokens.forEach(t => found.add(t))
     }
