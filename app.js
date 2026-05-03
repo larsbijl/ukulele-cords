@@ -34,7 +34,6 @@ async function init() {
 
   updateTuningLabel()
 
-  document.getElementById('print-btn').addEventListener('click', () => window.print())
 }
 
 function updateTuningLabel() {
@@ -70,15 +69,24 @@ function renderChords(title, chords) {
   const dict = chordDicts[currentTuning]
   const tuningLabels = TUNINGS[currentTuning].labels
 
+  const IMPORTANCE_RANK = { 'Essential': 4, 'Frequently used': 3, 'Occasionally used': 2, 'Rarely used': 1 }
+
   const info = document.getElementById('song-info')
   const grid = document.getElementById('chord-grid')
-  const printBtn = document.getElementById('print-btn')
 
   info.textContent = `${title} — ${chords.length} chord${chords.length !== 1 ? 's' : ''}`
   grid.innerHTML = ''
-  printBtn.style.display = ''
 
-  for (const name of chords) {
+  const sorted = [...chords].sort((a, b) => {
+    const ea = dict.find(c => c.name === a)
+    const eb = dict.find(c => c.name === b)
+    const ia = IMPORTANCE_RANK[ea?.importance] ?? 0
+    const ib = IMPORTANCE_RANK[eb?.importance] ?? 0
+    if (ib !== ia) return ib - ia
+    return (eb?.difficulty ?? 0) - (ea?.difficulty ?? 0)
+  })
+
+  for (const name of sorted) {
     const entry = dict.find(c => c.name === name)
     const card = document.createElement('div')
     card.className = 'chord-card' + (entry ? '' : ' unknown')
@@ -93,7 +101,10 @@ function renderChords(title, chords) {
     grid.appendChild(card)
 
     if (entry) {
-      const fingers = entry.frets.map((f, i) => [4 - i, f])
+      const fingers = entry.frets.map((f, i) => {
+        const fingerNum = entry.fingers?.[i]
+        return fingerNum ? [4 - i, f, String(fingerNum)] : [4 - i, f]
+      })
       const nonZero = entry.frets.filter(f => f > 0)
       const maxFret = nonZero.length ? Math.max(...nonZero) : 0
       const minNonZero = nonZero.length ? Math.min(...nonZero) : 1
@@ -121,6 +132,13 @@ function renderChords(title, chords) {
           barres: entry.barres || [],
         })
         .draw()
+
+      // iOS WebKit ignores dominant-baseline:central → finger numbers sit below circle center.
+      // dy="-0.35em" pulls text up to compensate. Chrome doesn't need this (dominant-baseline works).
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
+          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+        svg.querySelectorAll('text').forEach(t => t.setAttribute('dy', '-0.15em'))
+      }
 
       svg.style.width = '100%'
       const w = svg.getBoundingClientRect().width
