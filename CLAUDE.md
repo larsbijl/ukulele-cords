@@ -27,7 +27,8 @@ Single-page tool: drop a PDF → extract unique chords → render baritone ukule
 **Files:**
 - `index.html` — markup, drop zone, CDN script tags (pdfjs-dist@3.11.174, svguitar@2.5.0 UMD)
 - `app.js` — all logic as plain globals (no modules)
-- `chords_baritone.json` — fingering dictionary, 40 entries
+- `chords_baritone.json` — baritone fingering dictionary, ~323 entries
+- `chords_standard.json` — standard ukulele fingering dictionary
 - `styles.css` — grid layout + `@media print`
 - `songs/` — PDF songbooks for testing
 
@@ -52,6 +53,7 @@ PDFs use inline bracket notation like `[Am] Today is [C] gonna be...`. pdfjs fra
 
 - `frets`: 4 values for strings **D, G, B, E** (low to high). `0` = open.
 - `barres`: array of `{"fret": N, "fromString": M, "toString": P}` where string 1 = high E (rightmost), string 4 = low D (leftmost). This is the **opposite** of `frets` array order — svguitar numbers strings right-to-left.
+- **CRITICAL — barre fromString/toString order:** `fromString` must be the **leftmost** covered string (higher number, closer to D), and `toString` must be the **rightmost** (lower number, closer to E). svguitar positions the barre rect starting from `fromString`'s x-coordinate. Swapping them causes the barre to not span all intended strings. Example: to barre strings 2-4 (B, G, D), use `fromString:4, toString:2`.
 - Finger mapping in `app.js`: `frets.map((f, i) => [4 - i, f])` converts frets array to svguitar's `[stringNumber, fret]` pairs.
 
 ## iOS WebKit SVG rendering quirk
