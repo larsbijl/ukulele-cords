@@ -22,26 +22,24 @@ python3 -m http.server 8765
 
 ## Architecture
 
-Single-page tool: drop a PDF → extract unique chords → render baritone ukulele fingering diagrams.
+Single-page tool: paste/extract text with bracketed chords → render ukulele fingering diagrams.
 
 **Files:**
-- `index.html` — markup, drop zone, CDN script tags (pdfjs-dist@3.11.174, svguitar@2.5.0 UMD)
+- `index.html` — markup
 - `app.js` — all logic as plain globals (no modules)
 - `chords_baritone.json` — baritone fingering dictionary, ~323 entries
 - `chords_standard.json` — standard ukulele fingering dictionary
 - `styles.css` — grid layout + `@media print`
-- `songs/` — PDF songbooks for testing
 
 **CDN globals used:**
-- `pdfjsLib` — PDF parsing (pdfjs-dist v3, UMD from cdnjs)
 - `svguitar.SVGuitarChord` — chord diagram renderer (svguitar v2, UMD from unpkg)
 
-## Chord extraction (two methods)
+## Chord extraction
 
-PDFs use inline bracket notation like `[Am] Today is [C] gonna be...`. pdfjs fragments text items at arbitrary boundaries, so `[F]` can arrive as three separate items (`[`, `F`, `]`). Both extraction methods run on every PDF:
+Text uses inline bracket notation like `[Am] Today is [C] gonna be...`. Two extraction methods run on every input:
 
-1. **Bracket scan** — raw-concat all text items per page (no spaces), then regex `/\[([^\]]{1,12})\]/g`. First whitespace/slash token from each match is tested against `CHORD_REGEX`.
-2. **Standalone lines** — text items grouped by Y coordinate (rounded to nearest px), space-joined. Lines of 1–4 tokens that all match `CHORD_REGEX` and are ≤6 chars are treated as chord lines.
+1. **Bracket scan** — regex `/\[([^\]]{1,12})\]/g`. First whitespace/slash token from each match is tested against `CHORD_REGEX`.
+2. **Standalone lines** — lines grouped by Y coordinate, space-joined. Lines of 1–4 tokens that all match `CHORD_REGEX` and are ≤6 chars are treated as chord lines.
 
 `CHORD_REGEX` handles compound qualities: `madd` (e.g. `Amadd9`), `m+` (e.g. `Am+7`), standard qualities, slash chords.
 
@@ -99,7 +97,7 @@ An iOS Shortcut turns a photo of a chord sheet into a live chord diagram page wi
    then append the encoded text.
 5. Open URL — passes the assembled URL to Safari.
 
-The app reads the `text` query param on load, extracts chords from it using the same two-method pipeline as PDF extraction, and renders the diagrams.
+The app reads the `text` query param on load, extracts chords from it using the same two-method pipeline, and renders the diagrams.
 
 **Why this works:** OCR preserves bracketed chord notation (`[Am]`) well enough for the bracket-scan extractor to find them. The `text` param is always last in the URL and the app reads everything after `text=` raw (not just `URLSearchParams`) to tolerate unencoded `&` characters that can appear inside embedded URLs in song sheets.
 
