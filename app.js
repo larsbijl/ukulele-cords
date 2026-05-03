@@ -4,6 +4,61 @@ const CHORD_REGEX = /^[A-G](#|b)?(maj|min|madd|m\+|m|dim|aug|sus|add|M)?\d*(\/[A
 
 const FINGER_COLORS = { 1: '#3B82F6', 2: '#22C55E', 3: '#F59E0B', 4: '#A855F7' }
 
+const FREQUENCIES = {
+  baritone: [146.83, 196.00, 246.94, 329.63],
+  standard: [392.00, 261.63, 329.63, 440.00],
+}
+
+let audioCtx = null
+
+function getAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume()
+  }
+  return audioCtx
+}
+
+function playChord(entry) {
+  const ctx = getAudioContext()
+  const frets = entry.frets
+  const freqs = FREQUENCIES[currentTuning]
+  const now = ctx.currentTime
+
+  frets.forEach((fret, i) => {
+    if (fret == null) return
+
+    const frequency = freqs[i] * Math.pow(2, fret / 12)
+    const start = now + i * 0.04
+
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    const filter = ctx.createBiquadFilter()
+
+    osc.type = 'triangle'
+    osc.frequency.value = frequency
+
+    filter.type = 'lowpass'
+    filter.frequency.value = 1200
+    filter.Q.value = 1
+
+    const vol = 0.25 / frets.length
+    gain.gain.setValueAtTime(0, start)
+    gain.gain.linearRampToValueAtTime(vol, start + 0.006)
+    gain.gain.exponentialRampToValueAtTime(vol * 0.15, start + 0.3)
+    gain.gain.exponentialRampToValueAtTime(0.001, start + 2.5)
+
+    osc.connect(filter)
+    filter.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start(start)
+    osc.stop(start + 2.5)
+  })
+}
+
 const LEGEND_ITEMS = [
   { num: 1, label: 'Index', color: FINGER_COLORS[1] },
   { num: 2, label: 'Middle', color: FINGER_COLORS[2] },
@@ -105,9 +160,24 @@ function buildChordCard(name, entry, tuningLabels) {
   const card = document.createElement('div')
   card.className = 'chord-card'
 
+  const header = document.createElement('div')
+  header.className = 'chord-card-header'
+
   const label = document.createElement('h3')
   label.textContent = name
-  card.appendChild(label)
+  header.appendChild(label)
+
+  const playBtn = document.createElement('button')
+  playBtn.className = 'play-btn'
+  playBtn.setAttribute('aria-label', 'Play ' + name)
+  playBtn.innerHTML =
+    '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="6,3 20,12 6,21"/></svg>'
+  playBtn.addEventListener('click', e => {
+    e.stopPropagation()
+    playChord(entry)
+  })
+  header.appendChild(playBtn)
+  card.appendChild(header)
 
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   card.appendChild(svg)
