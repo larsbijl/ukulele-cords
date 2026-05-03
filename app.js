@@ -38,6 +38,7 @@ async function init() {
   })
 
   updateTuningLabel()
+  if (isIOS) document.getElementById('take-photo-btn').removeAttribute('hidden')
   initModal()
 }
 

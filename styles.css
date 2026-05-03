@@ -106,8 +106,25 @@ header h1 {
   color: #f0a500;
 }
 
-#add-chord-btn {
+#take-photo-btn {
   margin-left: auto;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+#add-chord-btn {
   background: var(--accent);
   color: #fff;
   border: none;
