@@ -57,6 +57,27 @@ header h1 {
 
 #tuning-label { display: none; }
 
+#finger-legend {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.legend-item::before {
+  content: '';
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--dot-color);
+}
+
 #song-info {
   font-family: 'Lora', serif;
   font-style: italic;

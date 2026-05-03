@@ -2,6 +2,15 @@
 
 const CHORD_REGEX = /^[A-G](#|b)?(maj|min|madd|m\+|m|dim|aug|sus|add|M)?\d*(\/[A-G](#|b)?)?$/
 
+const FINGER_COLORS = { 1: '#3B82F6', 2: '#22C55E', 3: '#F59E0B', 4: '#A855F7' }
+
+const LEGEND_ITEMS = [
+  { num: 1, label: 'Index', color: FINGER_COLORS[1] },
+  { num: 2, label: 'Middle', color: FINGER_COLORS[2] },
+  { num: 3, label: 'Ring', color: FINGER_COLORS[3] },
+  { num: 4, label: 'Pinky', color: FINGER_COLORS[4] },
+]
+
 const TUNINGS = {
   baritone: { labels: ['D', 'G', 'B', 'E'], file: 'chords_baritone.json', shortcut: 'Ukulele Baritone' },
   standard: { labels: ['G', 'C', 'E', 'A'], file: 'chords_standard.json', shortcut: 'Ukulele Standard' },
@@ -119,11 +128,26 @@ function buildChordCard(name, entry, tuningLabels) {
     svg.querySelectorAll('text').forEach(t => t.setAttribute('dy', '-0.15em'))
   }
 
+  // Color-code dots by finger
+  for (const t of svg.querySelectorAll('text')) {
+    const num = t.textContent.trim()
+    if (FINGER_COLORS[num] && t.previousElementSibling?.tagName === 'circle') {
+      t.previousElementSibling.setAttribute('fill', FINGER_COLORS[num])
+    }
+  }
+
   svg.style.width = '100%'
   const w = svg.getBoundingClientRect().width
   if (w) svg.style.height = Math.round(w * preH / 200) + 'px'
 
   return card
+}
+
+function renderLegend() {
+  const el = document.getElementById('finger-legend')
+  el.innerHTML = LEGEND_ITEMS.map(item =>
+    `<span class="legend-item" style="--dot-color:${item.color}">${item.label}</span>`
+  ).join('')
 }
 
 function buildUnknownCard(name) {
@@ -146,6 +170,7 @@ function buildUnknownCard(name) {
 function renderChords(title, chords) {
   lastTitle = title
   lastChords = chords
+  renderLegend()
 
   const dict = chordDicts[currentTuning]
   const tuningLabels = TUNINGS[currentTuning].labels
