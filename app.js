@@ -48,22 +48,23 @@ async function init() {
   })
 
   updateTuningLabel()
+  document.getElementById('fab-camera').removeAttribute('hidden')
   if (isIOS) {
-    document.getElementById('take-photo-btn').removeAttribute('hidden')
-    const shortcutBtn = document.getElementById('get-shortcut-btn')
-    if (shortcutBtn) {
-      shortcutBtn.removeAttribute('hidden')
-      shortcutBtn.href = 'https://www.icloud.com/shortcuts/3d15801f293a48c89a72f79806968258'
+    const shortcutEl = document.getElementById('menu-get-shortcut')
+    if (shortcutEl) {
+      shortcutEl.removeAttribute('hidden')
+      shortcutEl.href = 'https://www.icloud.com/shortcuts/3d15801f293a48c89a72f79806968258'
     }
   }
   initModal()
+  initMenu()
 }
 
 function updateTuningLabel() {
   const labels = TUNINGS[currentTuning].labels
   document.getElementById('tuning-label').textContent = labels.join(' ')
-  const btn = document.getElementById('take-photo-btn')
-  if (btn) btn.href = 'shortcuts://run-shortcut?name=' + encodeURIComponent(SHORTCUT_NAME)
+  const fab = document.getElementById('fab-camera')
+  if (fab) fab.href = 'shortcuts://run-shortcut?name=' + encodeURIComponent(SHORTCUT_NAME)
 }
 
 function extractChords(allText, lines) {
@@ -227,7 +228,7 @@ function renderChords(title, chords) {
 }
 
 function initModal() {
-  const btn = document.getElementById('add-chord-btn')
+  const btn = document.getElementById('menu-add-chord')
   const modal = document.getElementById('chord-modal')
   const input = document.getElementById('chord-input')
   const addBtn = document.getElementById('modal-add')
@@ -275,6 +276,32 @@ function initModal() {
       renderChords('', manualChords)
     }
   }
+}
+
+function initMenu() {
+  const btn = document.getElementById('menu-btn')
+  const dropdown = document.getElementById('menu-dropdown')
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation()
+    const isOpen = !dropdown.hasAttribute('hidden')
+    dropdown.toggleAttribute('hidden')
+    btn.setAttribute('aria-expanded', !isOpen)
+  })
+
+  dropdown.addEventListener('click', () => {
+    dropdown.setAttribute('hidden', '')
+    btn.setAttribute('aria-expanded', 'false')
+  })
+
+  document.addEventListener('click', e => {
+    if (!dropdown.hasAttribute('hidden') &&
+        !dropdown.contains(e.target) &&
+        e.target !== btn) {
+      dropdown.setAttribute('hidden', '')
+      btn.setAttribute('aria-expanded', 'false')
+    }
+  })
 }
 
 init().then(() => {

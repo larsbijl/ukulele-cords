@@ -63,6 +63,7 @@ header h1 {
   align-items: center;
   font-size: 0.75rem;
   color: var(--muted);
+  min-width: 0;
 }
 .legend-item {
   display: inline-flex;
@@ -127,46 +128,94 @@ header h1 {
   color: #f0a500;
 }
 
-#header-actions {
+#header-menu {
+  position: relative;
+  flex-shrink: 0;
   margin-left: auto;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  flex-shrink: 0;
+  align-self: center;
 }
 
-#take-photo-btn,
-#get-shortcut-btn {
+#menu-btn {
   background: var(--accent);
   color: #fff;
   border: none;
   border-radius: 50%;
   width: 2.2rem;
   height: 2.2rem;
-  font-size: 1.1rem;
-  line-height: 1;
   cursor: pointer;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+#menu-btn svg { display: block; }
+
+#menu-dropdown {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  z-index: 50;
+  min-width: 170px;
+  overflow: hidden;
+}
+
+#menu-dropdown button,
+#menu-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: none;
+  background: none;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text);
+  cursor: pointer;
   text-decoration: none;
+  text-align: left;
+  line-height: 1;
 }
 
-#add-chord-btn {
+#menu-dropdown button:hover,
+#menu-dropdown a:hover { background: var(--bg); }
+#menu-dropdown button:active,
+#menu-dropdown a:active { background: var(--border); }
+
+#menu-dropdown button + button,
+#menu-dropdown a + a,
+#menu-dropdown button + a,
+#menu-dropdown a + button { border-top: 1px solid var(--border); }
+
+#menu-dropdown[hidden] { display: none; }
+
+#fab-camera {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
   background: var(--accent);
   color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 2.2rem;
-  height: 2.2rem;
-  font-size: 1.4rem;
-  line-height: 1;
-  cursor: pointer;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 50;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+#fab-camera[hidden] { display: none; }
+
+#fab-camera:active {
+  transform: scale(0.92);
 }
 
 .modal-overlay {
