@@ -148,6 +148,24 @@ function renderChords(title, chords) {
     const w = svg.getBoundingClientRect().width
     if (w) svg.style.height = Math.round(w * preH / 200) + 'px'
   }
+
+  const unknown = chords.filter(name => !entryMap.has(name))
+  for (const name of unknown) {
+    const card = document.createElement('div')
+    card.className = 'chord-card unknown'
+    const label = document.createElement('h3')
+    label.textContent = name
+    card.appendChild(label)
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    svg.setAttribute('viewBox', '0 0 100 120')
+    svg.innerHTML = `<rect x="5" y="5" width="90" height="110" rx="4" fill="#fff9ec" stroke="#f0a500" stroke-width="1.5"/><text x="50" y="70" text-anchor="middle" font-size="36" fill="#f0a500">?</text>`
+    card.appendChild(svg)
+    const note = document.createElement('span')
+    note.className = 'unknown-label'
+    note.textContent = 'not in dictionary'
+    card.appendChild(note)
+    grid.appendChild(card)
+  }
 }
 
 init().then(() => {
