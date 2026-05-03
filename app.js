@@ -3,8 +3,8 @@
 const CHORD_REGEX = /^[A-G](#|b)?(maj|min|madd|m\+|m|dim|aug|sus|add|M)?\d*(\/[A-G](#|b)?)?$/
 
 const TUNINGS = {
-  baritone: { labels: ['D', 'G', 'B', 'E'], file: 'chords.json' },
-  standard: { labels: ['G', 'C', 'E', 'A'], file: 'chords_standard.json' },
+  baritone: { labels: ['D', 'G', 'B', 'E'], file: 'chords.json', shortcut: 'Ukulele Baritone' },
+  standard: { labels: ['G', 'C', 'E', 'A'], file: 'chords_standard.json', shortcut: 'Ukulele Standard' },
 }
 
 let chordDicts = { baritone: [], standard: [] }
@@ -43,8 +43,10 @@ async function init() {
 }
 
 function updateTuningLabel() {
-  const { labels } = TUNINGS[currentTuning]
+  const { labels, shortcut } = TUNINGS[currentTuning]
   document.getElementById('tuning-label').textContent = labels.join(' ')
+  const btn = document.getElementById('take-photo-btn')
+  if (btn) btn.href = 'shortcuts://run-shortcut?name=' + encodeURIComponent(shortcut)
 }
 
 function extractChords(allText, lines) {
