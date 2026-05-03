@@ -1,6 +1,5 @@
-/* global pdfjsLib, svguitar */
+/* global svguitar */
 
-const WORKER_SRC = 'vendor/pdf.worker.min.js'
 const CHORD_REGEX = /^[A-G](#|b)?(maj|min|madd|m\+|m|dim|aug|sus|add|M)?\d*(\/[A-G](#|b)?)?$/
 
 const TUNINGS = {
@@ -14,8 +13,6 @@ let lastTitle = ''
 let lastChords = []
 
 async function init() {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = WORKER_SRC
-
   const v = '?v=' + Date.now()
   ;[chordDicts.baritone, chordDicts.standard] = await Promise.all([
     fetch('chords.json' + v).then(r => r.json()),
@@ -37,69 +34,12 @@ async function init() {
 
   updateTuningLabel()
 
-  const dropZone = document.getElementById('drop-zone')
-  const fileInput = document.getElementById('file-input')
-
-  dropZone.addEventListener('dragover', e => {
-    e.preventDefault()
-    dropZone.classList.add('drag-over')
-  })
-  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'))
-  dropZone.addEventListener('drop', e => {
-    e.preventDefault()
-    dropZone.classList.remove('drag-over')
-    const file = e.dataTransfer.files[0]
-    if (file && file.type === 'application/pdf') loadPDF(file)
-  })
-  fileInput.addEventListener('change', () => {
-    const file = fileInput.files[0]
-    if (file) loadPDF(file)
-  })
-
   document.getElementById('print-btn').addEventListener('click', () => window.print())
-
-  document.getElementById('load-btn').addEventListener('click', () => {
-    document.getElementById('file-input').click()
-  })
 }
 
 function updateTuningLabel() {
   const { labels } = TUNINGS[currentTuning]
   document.getElementById('tuning-label').textContent = labels.join(' ')
-}
-
-async function loadPDF(file) {
-  const arrayBuffer = await file.arrayBuffer()
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
-
-  const meta = await pdf.getMetadata().catch(() => null)
-  let title = meta?.info?.Title || ''
-  title = title.replace(/^Microsoft Word\s*-\s*/i, '').replace(/\.[a-z]{2,4}$/i, '').trim()
-  if (!title) title = file.name.replace(/\.pdf$/i, '')
-
-  let allText = ''
-  const lines = []
-
-  for (let p = 1; p <= pdf.numPages; p++) {
-    const page = await pdf.getPage(p)
-    const content = await page.getTextContent()
-
-    allText += content.items.map(i => i.str).join('')
-
-    const lineMap = new Map()
-    for (const item of content.items) {
-      const y = Math.round(item.transform[5])
-      if (!lineMap.has(y)) lineMap.set(y, [])
-      lineMap.get(y).push(item.str.trim())
-    }
-    for (const [, parts] of lineMap) {
-      const line = parts.join(' ').trim()
-      if (line) lines.push(line)
-    }
-  }
-
-  const chords = extractChords(allText, lines)
-  renderChords(title, chords)
 }
 
 function extractChords(allText, lines) {
@@ -133,14 +73,10 @@ function renderChords(title, chords) {
   const info = document.getElementById('song-info')
   const grid = document.getElementById('chord-grid')
   const printBtn = document.getElementById('print-btn')
-  const loadBtn = document.getElementById('load-btn')
-  const dropZone = document.getElementById('drop-zone')
 
   info.textContent = `${title} — ${chords.length} chord${chords.length !== 1 ? 's' : ''}`
   grid.innerHTML = ''
   printBtn.style.display = ''
-  loadBtn.style.display = ''
-  dropZone.style.display = 'none'
 
   for (const name of chords) {
     const entry = dict.find(c => c.name === name)

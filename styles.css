@@ -23,38 +23,14 @@ header h1 { font-size: 1.2rem; }
 
 #song-info { color: #555; font-size: 0.9rem; }
 
-#load-btn, #print-btn {
+#print-btn {
   padding: 0.4rem 1rem;
   border: 1px solid #333;
   background: #fff;
   cursor: pointer;
   border-radius: 4px;
+  margin-left: auto;
 }
-
-#print-btn { margin-left: auto; }
-
-#drop-zone {
-  border: 2px dashed #aaa;
-  border-radius: 8px;
-  padding: 2rem;
-  text-align: center;
-  background: #fff;
-  margin-bottom: 1.5rem;
-  transition: border-color 0.2s, background 0.2s;
-}
-
-#drop-zone.drag-over {
-  border-color: #4a90e2;
-  background: #eef5ff;
-}
-
-#drop-zone label {
-  color: #4a90e2;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-#file-input { display: none; }
 
 #chord-grid {
   display: grid;
@@ -96,7 +72,7 @@ header h1 { font-size: 1.2rem; }
 @media print {
   body { background: #fff; padding: 0.5rem; }
   header { margin-bottom: 0.5rem; }
-  #drop-zone, #load-btn, #print-btn { display: none !important; }
+  #print-btn { display: none !important; }
   #chord-grid {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 0.5rem;
