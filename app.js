@@ -83,12 +83,12 @@ function renderChords(title, chords) {
   const sorted = [...known].sort((a, b) => {
     const ea = entryMap.get(a)
     const eb = entryMap.get(b)
-    const da = ea?.difficulty ?? 0
-    const db = eb?.difficulty ?? 0
-    if (db !== da) return db - da
     const ia = IMPORTANCE_RANK[ea?.importance] ?? 0
     const ib = IMPORTANCE_RANK[eb?.importance] ?? 0
-    return ia - ib
+    if (ia !== ib) return ia - ib
+    const da = ea?.difficulty ?? 0
+    const db = eb?.difficulty ?? 0
+    return db - da
   })
 
   for (const name of sorted) {
