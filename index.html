@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Baritone Uke Chord Charts</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="vendor/pdf.min.js"></script>
   <script src="vendor/svguitar.umd.js"></script>
 </head>
 <body>
@@ -21,14 +20,8 @@
       <span id="tuning-label"></span>
     </div>
     <div id="song-info"></div>
-    <button id="load-btn" style="display:none">Load PDF</button>
     <button id="print-btn" style="display:none">Print</button>
   </header>
-
-  <div id="drop-zone">
-    <p>Drop a ChordPro PDF here or <label for="file-input">choose file</label></p>
-    <input type="file" id="file-input" accept=".pdf">
-  </div>
 
   <div id="chord-grid"></div>
 
