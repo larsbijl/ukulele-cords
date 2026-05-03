@@ -50,6 +50,7 @@ async function init() {
   updateTuningLabel()
   document.getElementById('fab-camera').removeAttribute('hidden')
   if (isIOS) {
+    document.getElementById('menu-ios-section').removeAttribute('hidden')
     const shortcutEl = document.getElementById('menu-get-shortcut')
     if (shortcutEl) {
       shortcutEl.removeAttribute('hidden')
@@ -58,6 +59,17 @@ async function init() {
   }
   initModal()
   initMenu()
+  document.getElementById('menu-add-home').addEventListener('click', () => {
+    alert(
+      'To add the Shortcut to your Home Screen:\n\n' +
+      '1. Open the Shortcuts app\n' +
+      '2. Find the "Ukulele" shortcut\n' +
+      '3. Tap ••• and choose "Add to Home Screen"\n' +
+      '4. Set a custom icon if you like\n' +
+      '5. Tap Done in the top-right\n\n' +
+      'Your Ukulele shortcut will now appear on your Home Screen like any other app.'
+    )
+  })
 }
 
 function updateTuningLabel() {

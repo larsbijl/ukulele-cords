@@ -190,7 +190,17 @@ header h1 {
 #menu-dropdown button + button,
 #menu-dropdown a + a,
 #menu-dropdown button + a,
-#menu-dropdown a + button { border-top: 1px solid var(--border); }
+#menu-dropdown a + button,
+#menu-dropdown .menu-section { border-top: 1px solid var(--border); }
+
+.menu-section { padding: 0.4rem 0.9rem 0.3rem; }
+
+.menu-section-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
 
 #menu-dropdown[hidden] { display: none; }
 
