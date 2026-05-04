@@ -31,8 +31,9 @@ Single-page tool: paste/extract text with bracketed chords → render ukulele fi
 - `chords_standard.json` — standard ukulele fingering dictionary
 - `styles.css` — grid layout + `@media print`
 
-**CDN globals used:**
-- `svguitar.SVGuitarChord` — chord diagram renderer (svguitar v2, UMD from unpkg)
+**Vendored libraries:**
+- `vendor/svguitar.umd.js` — chord diagram renderer (svguitar v2)
+- `vendor/Sortable.min.js` — drag-and-drop reordering
 
 ## Chord extraction
 
