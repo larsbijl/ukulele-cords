@@ -398,8 +398,14 @@ init().then(() => {
     : params.get('text')
 
   if (rawText) {
-    const lines = rawText.split('\n')
-    const chords = extractChords(rawText, lines)
-    renderChords('Photo', chords)
+    const commaTokens = rawText.split(',').map(t => t.trim()).filter(Boolean)
+    const isCommaList = commaTokens.length > 0 && commaTokens.every(t => CHORD_REGEX.test(t))
+    if (isCommaList) {
+      renderChords('Manual', commaTokens)
+    } else {
+      const lines = rawText.split('\n')
+      const chords = extractChords(rawText, lines)
+      renderChords('Photo', chords)
+    }
   }
 })
