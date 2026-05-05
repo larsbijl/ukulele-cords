@@ -118,7 +118,7 @@ header h1 {
 
 .chord-card h3 {
   font-family: 'Lora', serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   font-style: italic;
   color: var(--accent);
@@ -333,7 +333,7 @@ header h1 {
   #chord-grid { grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
   .chord-card { padding: 0.25rem; gap: 0.1rem; }
   .chord-card-header { gap: 0.15rem; }
-  .chord-card h3 { font-size: 0.7rem; }
+  .chord-card h3 { font-size: 0.8rem; }
   .play-btn svg { width: 12px; height: 12px; }
   .play-btn { padding: 0; }
 }
