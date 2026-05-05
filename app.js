@@ -227,9 +227,11 @@ function buildChordCard(name, entry, tuningLabels) {
     }
   }
 
+  // Responsive sizing: viewBox provides intrinsic aspect ratio, 
+  // width:100% fills container, no explicit height needed.
+  svg.setAttribute('viewBox', `0 0 200 ${preH}`)
   svg.style.width = '100%'
-  const w = svg.getBoundingClientRect().width
-  if (w) svg.style.height = Math.round(w * preH / 200) + 'px'
+  svg.removeAttribute('height')
 
   return card
 }
